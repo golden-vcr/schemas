@@ -40,6 +40,42 @@ type Payload struct {
 	ViewerGiftedSubs      *PayloadViewerGiftedSubs
 }
 
+func (e *Event) UnmarshalJSON(data []byte) error {
+	type fields struct {
+		Type    EventType       `json:"type"`
+		Viewer  *Viewer         `json:"viewer"`
+		Payload json.RawMessage `json:"payload"`
+	}
+	var f fields
+	if err := json.Unmarshal(data, &f); err != nil {
+		return err
+	}
+
+	e.Type = f.Type
+	e.Viewer = f.Viewer
+	switch f.Type {
+	case EventTypeViewerRaided:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerRaided)
+	case EventTypeViewerCheered:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerCheered)
+	case EventTypeViewerSubscribed:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerSubscribed)
+	case EventTypeViewerResubscribed:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerResubscribed)
+	case EventTypeViewerReceivedGiftSub:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerReceivedGiftSub)
+	case EventTypeViewerGiftedSubs:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerGiftedSubs)
+	}
+	return nil
+}
+
 func (p Payload) MarshalJSON() ([]byte, error) {
 	if p.ViewerRaided != nil {
 		return json.Marshal(p.ViewerRaided)
