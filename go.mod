@@ -3,6 +3,7 @@ module github.com/golden-vcr/schemas
 go 1.21.3
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/nicklaw5/helix/v2 v2.25.3
 	github.com/stretchr/testify v1.8.4
 )

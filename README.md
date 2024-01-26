@@ -15,15 +15,18 @@ flowchart LR
 
     hooks([hooks])
     chatbot([chatbot])
+    broadcasts([broadcasts])
     dispatch([dispatch])
     auth([auth])
     ledger([ledger])
     dynamo([dynamo])
     alerts([alerts])
 
+    frontend(frontend)
     graphics(graphics)
 
     twitch-events[/twitch-events/]
+    broadcast-events[/broadcast-events/]
     onscreen-events[/onscreen-events/]
     generation-requests[/generation-requests/]
 
@@ -32,6 +35,9 @@ flowchart LR
     hooks --> twitch-events
     chatbot --> twitch-events
     twitch-events --> dispatch
+    frontend <-.-> broadcasts
+    twitch-events --> broadcasts
+    broadcasts --> broadcast-events
     dispatch <-.-> auth
     dispatch <-.-> ledger
     dispatch --> onscreen-events
@@ -42,6 +48,8 @@ flowchart LR
     generation-requests --> dynamo([dynamo])
     dynamo <-.-> openai{{OpenAI Images API}}
     dynamo --> onscreen-events[/onscreen-events/]
+    broadcast-events -.-> OUT:::hidden
+    classDef hidden display: none;
 ```
 
 ## twitch-events
@@ -149,6 +157,32 @@ flowchart LR
     classDef hidden display: none;
 ```
 
+## broadcast-events
+
+Each time we go live on Twitch, we establish a new **broadcast** in the Golden VCR
+backend. While that broadcast is ongoing, we can choose a tape to begin a **screening**
+of that tape within the broadcast. These changes in overall state are represented by
+messages that conform to the **broadcast-events** schema, which are published to a queue
+of the same name by the [**broadcasts**][gh-broadcasts] service.
+
+```mermaid
+flowchart LR
+    subgraph goldenvcr.com
+        frontend(frontend)
+    end
+    frontend <-.-> broadcasts([broadcasts])
+    broadcasts --> broadcast-events[/broadcast-events/]
+    twitch-events[/twitch-events/] --> broadcasts
+    broadcast-events -.-> OUT:::hidden
+
+    classDef hidden display: none;
+```
+
+Services that need to be aware of the current broadcast state (i.e. whether the stream
+is live and which tape is being screened) can consume events from **broadcast-events**
+in order to be notified when that state changes.
+
+
 [twitch-docs-eventsub]: https://dev.twitch.tv/docs/eventsub/
 [twitch-docs-irc]: https://dev.twitch.tv/docs/irc/
 [gh-hooks]: https://github.com/golden-vcr/hooks
@@ -159,3 +193,4 @@ flowchart LR
 [gh-alerts]: https://github.com/golden-vcr/alerts
 [gh-graphics]: https://github.com/golden-vcr/graphics
 [gh-dynamo]: https://github.com/golden-vcr/dynamo
+[gh-broadcasts]: https://github.com/golden-vcr/broadcasts
