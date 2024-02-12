@@ -7,15 +7,16 @@ import (
 type EventType string
 
 const (
-	EventTypeStreamStarted         EventType = "stream-started"
-	EventTypeStreamEnded           EventType = "stream-ended"
-	EventTypeViewerFollowed        EventType = "viewer-followed"
-	EventTypeViewerRaided          EventType = "viewer-raided"
-	EventTypeViewerCheered         EventType = "viewer-cheered"
-	EventTypeViewerSubscribed      EventType = "viewer-subscribed"
-	EventTypeViewerResubscribed    EventType = "viewer-resubscribed"
-	EventTypeViewerReceivedGiftSub EventType = "viewer-received-gift-sub"
-	EventTypeViewerGiftedSubs      EventType = "viewer-gifted-subs"
+	EventTypeStreamStarted           EventType = "stream-started"
+	EventTypeStreamEnded             EventType = "stream-ended"
+	EventTypeViewerFollowed          EventType = "viewer-followed"
+	EventTypeViewerRaided            EventType = "viewer-raided"
+	EventTypeViewerCheered           EventType = "viewer-cheered"
+	EventTypeViewerRedeemedFunPoints EventType = "viewer-redeemed-fun-points"
+	EventTypeViewerSubscribed        EventType = "viewer-subscribed"
+	EventTypeViewerResubscribed      EventType = "viewer-resubscribed"
+	EventTypeViewerReceivedGiftSub   EventType = "viewer-received-gift-sub"
+	EventTypeViewerGiftedSubs        EventType = "viewer-gifted-subs"
 )
 
 // Event is an event that has occurred on Twitch, such as a viewer interaction or a
@@ -32,12 +33,13 @@ type Viewer struct {
 }
 
 type Payload struct {
-	ViewerRaided          *PayloadViewerRaided
-	ViewerCheered         *PayloadViewerCheered
-	ViewerSubscribed      *PayloadViewerSubscribed
-	ViewerResubscribed    *PayloadViewerResubscribed
-	ViewerReceivedGiftSub *PayloadViewerReceivedGiftSub
-	ViewerGiftedSubs      *PayloadViewerGiftedSubs
+	ViewerRaided            *PayloadViewerRaided
+	ViewerCheered           *PayloadViewerCheered
+	ViewerRedeemedFunPoints *PayloadViewerRedeemedFunPoints
+	ViewerSubscribed        *PayloadViewerSubscribed
+	ViewerResubscribed      *PayloadViewerResubscribed
+	ViewerReceivedGiftSub   *PayloadViewerReceivedGiftSub
+	ViewerGiftedSubs        *PayloadViewerGiftedSubs
 }
 
 func (e *Event) UnmarshalJSON(data []byte) error {
@@ -60,6 +62,9 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	case EventTypeViewerCheered:
 		e.Payload = &Payload{}
 		return json.Unmarshal(f.Payload, &e.Payload.ViewerCheered)
+	case EventTypeViewerRedeemedFunPoints:
+		e.Payload = &Payload{}
+		return json.Unmarshal(f.Payload, &e.Payload.ViewerRedeemedFunPoints)
 	case EventTypeViewerSubscribed:
 		e.Payload = &Payload{}
 		return json.Unmarshal(f.Payload, &e.Payload.ViewerSubscribed)
@@ -83,6 +88,9 @@ func (p Payload) MarshalJSON() ([]byte, error) {
 	if p.ViewerCheered != nil {
 		return json.Marshal(p.ViewerCheered)
 	}
+	if p.ViewerRedeemedFunPoints != nil {
+		return json.Marshal(p.ViewerRedeemedFunPoints)
+	}
 	if p.ViewerSubscribed != nil {
 		return json.Marshal(p.ViewerSubscribed)
 	}
@@ -105,6 +113,11 @@ type PayloadViewerRaided struct {
 type PayloadViewerCheered struct {
 	NumBits int    `json:"num_bits"`
 	Message string `json:"message"`
+}
+
+type PayloadViewerRedeemedFunPoints struct {
+	NumPoints int    `json:"num_points"`
+	Message   string `json:"message"`
 }
 
 type PayloadViewerSubscribed struct {

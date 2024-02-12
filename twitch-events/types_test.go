@@ -86,6 +86,23 @@ func Test_Event(t *testing.T) {
 			`{"type":"viewer-cheered","viewer":null,"payload":{"num_bits":200,"message":"ghost of a seal"}}`,
 		},
 		{
+			"viewer redeemed fun points event",
+			Event{
+				Type: EventTypeViewerRedeemedFunPoints,
+				Viewer: &Viewer{
+					TwitchUserId:      "90790024",
+					TwitchDisplayName: "wasabimilkshake",
+				},
+				Payload: &Payload{
+					ViewerRedeemedFunPoints: &PayloadViewerRedeemedFunPoints{
+						NumPoints: 200,
+						Message:   "ghost of a seal",
+					},
+				},
+			},
+			`{"type":"viewer-redeemed-fun-points","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"payload":{"num_points":200,"message":"ghost of a seal"}}`,
+		},
+		{
 			"viewer subscribed event",
 			Event{
 				Type: EventTypeViewerSubscribed,
