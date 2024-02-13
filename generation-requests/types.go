@@ -12,6 +12,7 @@ import (
 type Request struct {
 	Type    RequestType `json:"type"`
 	Viewer  core.Viewer `json:"viewer"`
+	State   core.State  `json:"state"`
 	Payload Payload     `json:"payload"`
 }
 
@@ -31,6 +32,7 @@ func (e *Request) UnmarshalJSON(data []byte) error {
 	type fields struct {
 		Type    RequestType     `json:"type"`
 		Viewer  core.Viewer     `json:"viewer"`
+		State   core.State      `json:"state"`
 		Payload json.RawMessage `json:"payload"`
 	}
 	var f fields
@@ -40,6 +42,7 @@ func (e *Request) UnmarshalJSON(data []byte) error {
 
 	e.Type = f.Type
 	e.Viewer = f.Viewer
+	e.State = f.State
 	switch f.Type {
 	case RequestTypeImage:
 		return json.Unmarshal(f.Payload, &e.Payload.Image)

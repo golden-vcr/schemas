@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golden-vcr/schemas/core"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,6 +24,11 @@ func Test_Request(t *testing.T) {
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
+				State: core.State{
+					BroadcastId: 13,
+					ScreeningId: uuid.MustParse("96d1ca5c-7658-48c9-8193-9d1739854467"),
+					TapeId:      124,
+				},
 				Payload: Payload{
 					Image: &PayloadImage{
 						Style: ImageStyleGhost,
@@ -34,7 +40,7 @@ func Test_Request(t *testing.T) {
 					},
 				},
 			},
-			`{"type":"image","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"payload":{"style":"ghost","inputs":{"subject":"a seal"}}}`,
+			`{"type":"image","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"state":{"broadcast_id":13,"screening_id":"96d1ca5c-7658-48c9-8193-9d1739854467","tape_id":124},"payload":{"style":"ghost","inputs":{"subject":"a seal"}}}`,
 		},
 	}
 	for _, tt := range tests {
