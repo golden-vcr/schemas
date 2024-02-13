@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/golden-vcr/schemas/core"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,7 +33,7 @@ func Test_Event(t *testing.T) {
 			"viewer followed event",
 			Event{
 				Type: EventTypeViewerFollowed,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -43,7 +44,7 @@ func Test_Event(t *testing.T) {
 			"viewer raided event",
 			Event{
 				Type: EventTypeViewerRaided,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -59,7 +60,7 @@ func Test_Event(t *testing.T) {
 			"viewer cheered event",
 			Event{
 				Type: EventTypeViewerCheered,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -89,7 +90,7 @@ func Test_Event(t *testing.T) {
 			"viewer redeemed fun points event",
 			Event{
 				Type: EventTypeViewerRedeemedFunPoints,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -106,7 +107,7 @@ func Test_Event(t *testing.T) {
 			"viewer subscribed event",
 			Event{
 				Type: EventTypeViewerSubscribed,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -122,7 +123,7 @@ func Test_Event(t *testing.T) {
 			"viewer resubscribed event",
 			Event{
 				Type: EventTypeViewerResubscribed,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -140,7 +141,7 @@ func Test_Event(t *testing.T) {
 			"viewer received gift sub event",
 			Event{
 				Type: EventTypeViewerReceivedGiftSub,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
@@ -156,7 +157,7 @@ func Test_Event(t *testing.T) {
 			"viewer gifted subs event",
 			Event{
 				Type: EventTypeViewerGiftedSubs,
-				Viewer: &Viewer{
+				Viewer: &core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},

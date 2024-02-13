@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/golden-vcr/schemas/core"
 	"github.com/nicklaw5/helix/v2"
 )
 
@@ -14,7 +15,7 @@ func fromChannelFollowEvent(data json.RawMessage) (*Event, error) {
 	}
 	return &Event{
 		Type: EventTypeViewerFollowed,
-		Viewer: &Viewer{
+		Viewer: &core.Viewer{
 			TwitchUserId:      ev.UserID,
 			TwitchDisplayName: ev.UserName,
 		},
@@ -28,7 +29,7 @@ func fromChannelRaidEvent(data json.RawMessage) (*Event, error) {
 	}
 	return &Event{
 		Type: EventTypeViewerRaided,
-		Viewer: &Viewer{
+		Viewer: &core.Viewer{
 			TwitchUserId:      ev.FromBroadcasterUserID,
 			TwitchDisplayName: ev.FromBroadcasterUserName,
 		},
@@ -45,9 +46,9 @@ func fromChannelCheerEvent(data json.RawMessage) (*Event, error) {
 	if err := json.Unmarshal(data, &ev); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal ChannelCheerEvent: %w", err)
 	}
-	var viewer *Viewer
+	var viewer *core.Viewer
 	if !ev.IsAnonymous {
-		viewer = &Viewer{
+		viewer = &core.Viewer{
 			TwitchUserId:      ev.UserID,
 			TwitchDisplayName: ev.UserName,
 		}
@@ -76,7 +77,7 @@ func fromChannelSubscriptionEvent(data json.RawMessage) (*Event, error) {
 	if ev.IsGift {
 		return &Event{
 			Type: EventTypeViewerReceivedGiftSub,
-			Viewer: &Viewer{
+			Viewer: &core.Viewer{
 				TwitchUserId:      ev.UserID,
 				TwitchDisplayName: ev.UserName,
 			},
@@ -89,7 +90,7 @@ func fromChannelSubscriptionEvent(data json.RawMessage) (*Event, error) {
 	}
 	return &Event{
 		Type: EventTypeViewerSubscribed,
-		Viewer: &Viewer{
+		Viewer: &core.Viewer{
 			TwitchUserId:      ev.UserID,
 			TwitchDisplayName: ev.UserName,
 		},
@@ -112,7 +113,7 @@ func fromChannelSubscriptionMessageEvent(data json.RawMessage) (*Event, error) {
 	}
 	return &Event{
 		Type: EventTypeViewerResubscribed,
-		Viewer: &Viewer{
+		Viewer: &core.Viewer{
 			TwitchUserId:      ev.UserID,
 			TwitchDisplayName: ev.UserName,
 		},
@@ -135,9 +136,9 @@ func fromChannelSubscriptionGiftEvent(data json.RawMessage) (*Event, error) {
 	if err != nil {
 		return nil, err
 	}
-	var viewer *Viewer
+	var viewer *core.Viewer
 	if !ev.IsAnonymous {
-		viewer = &Viewer{
+		viewer = &core.Viewer{
 			TwitchUserId:      ev.UserID,
 			TwitchDisplayName: ev.UserName,
 		}

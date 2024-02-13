@@ -3,16 +3,16 @@ package genreq
 import (
 	"encoding/json"
 
-	etwitch "github.com/golden-vcr/schemas/twitch-events"
+	"github.com/golden-vcr/schemas/core"
 )
 
 // Request represents a payload produced to the 'generation-requests' queue in order to
 // kick off the processing required for a cheer that requests some kind of asynchronous
 // asset generation
 type Request struct {
-	Type    RequestType    `json:"type"`
-	Viewer  etwitch.Viewer `json:"viewer"`
-	Payload Payload        `json:"payload"`
+	Type    RequestType `json:"type"`
+	Viewer  core.Viewer `json:"viewer"`
+	Payload Payload     `json:"payload"`
 }
 
 // RequestType describes the kind of asset(s) we want to generate from this request
@@ -30,7 +30,7 @@ type Payload struct {
 func (e *Request) UnmarshalJSON(data []byte) error {
 	type fields struct {
 		Type    RequestType     `json:"type"`
-		Viewer  etwitch.Viewer  `json:"viewer"`
+		Viewer  core.Viewer     `json:"viewer"`
 		Payload json.RawMessage `json:"payload"`
 	}
 	var f fields

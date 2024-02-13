@@ -3,16 +3,16 @@ package eonscreen
 import (
 	"encoding/json"
 
-	etwitch "github.com/golden-vcr/schemas/twitch-events"
+	"github.com/golden-vcr/schemas/core"
 )
 
 // PayloadToast describes an onscreen toast notification that shouts out a viewer (who
 // may be anonymous, in which case Viewer is nil) in response to some interaction that
 // the viewer has performed
 type PayloadToast struct {
-	Type   ToastType       `json:"type"`
-	Viewer *etwitch.Viewer `json:"viewer"`
-	Data   *ToastData      `json:"data,omitempty"`
+	Type   ToastType    `json:"type"`
+	Viewer *core.Viewer `json:"viewer"`
+	Data   *ToastData   `json:"data,omitempty"`
 }
 
 // ToastType represents the different types of toast notifications we can display
@@ -37,7 +37,7 @@ type ToastData struct {
 func (p *PayloadToast) UnmarshalJSON(data []byte) error {
 	type fields struct {
 		Type   ToastType       `json:"type"`
-		Viewer *etwitch.Viewer `json:"viewer"`
+		Viewer *core.Viewer    `json:"viewer"`
 		Data   json.RawMessage `json:"data"`
 	}
 	var f fields

@@ -2,6 +2,8 @@ package etwitch
 
 import (
 	"encoding/json"
+
+	"github.com/golden-vcr/schemas/core"
 )
 
 type EventType string
@@ -22,14 +24,9 @@ const (
 // Event is an event that has occurred on Twitch, such as a viewer interaction or a
 // change in the state of the stream
 type Event struct {
-	Type    EventType `json:"type"`
-	Viewer  *Viewer   `json:"viewer"`
-	Payload *Payload  `json:"payload"`
-}
-
-type Viewer struct {
-	TwitchUserId      string `json:"twitch_user_id"`
-	TwitchDisplayName string `json:"twitch_display_name"`
+	Type    EventType    `json:"type"`
+	Viewer  *core.Viewer `json:"viewer"`
+	Payload *Payload     `json:"payload"`
 }
 
 type Payload struct {
@@ -45,7 +42,7 @@ type Payload struct {
 func (e *Event) UnmarshalJSON(data []byte) error {
 	type fields struct {
 		Type    EventType       `json:"type"`
-		Viewer  *Viewer         `json:"viewer"`
+		Viewer  *core.Viewer    `json:"viewer"`
 		Payload json.RawMessage `json:"payload"`
 	}
 	var f fields

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/golden-vcr/schemas/core"
 	genreq "github.com/golden-vcr/schemas/generation-requests"
-	etwitch "github.com/golden-vcr/schemas/twitch-events"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,7 +35,7 @@ func Test_Event(t *testing.T) {
 				Payload: Payload{
 					Toast: &PayloadToast{
 						Type: ToastTypeFollowed,
-						Viewer: &etwitch.Viewer{
+						Viewer: &core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
@@ -51,7 +51,7 @@ func Test_Event(t *testing.T) {
 				Payload: Payload{
 					Toast: &PayloadToast{
 						Type: ToastTypeCheered,
-						Viewer: &etwitch.Viewer{
+						Viewer: &core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
@@ -91,7 +91,7 @@ func Test_Event(t *testing.T) {
 				Payload: Payload{
 					Toast: &PayloadToast{
 						Type: ToastTypeSubscribed,
-						Viewer: &etwitch.Viewer{
+						Viewer: &core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
@@ -107,7 +107,7 @@ func Test_Event(t *testing.T) {
 				Payload: Payload{
 					Toast: &PayloadToast{
 						Type: ToastTypeResubscribed,
-						Viewer: &etwitch.Viewer{
+						Viewer: &core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
@@ -129,7 +129,7 @@ func Test_Event(t *testing.T) {
 				Payload: Payload{
 					Toast: &PayloadToast{
 						Type: ToastTypeGiftedSubs,
-						Viewer: &etwitch.Viewer{
+						Viewer: &core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
@@ -166,7 +166,7 @@ func Test_Event(t *testing.T) {
 				Type: EventTypeImage,
 				Payload: Payload{
 					Image: &PayloadImage{
-						Viewer: etwitch.Viewer{
+						Viewer: core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	etwitch "github.com/golden-vcr/schemas/twitch-events"
+	"github.com/golden-vcr/schemas/core"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +19,7 @@ func Test_Request(t *testing.T) {
 			"request for a ghost image",
 			Request{
 				Type: RequestTypeImage,
-				Viewer: etwitch.Viewer{
+				Viewer: core.Viewer{
 					TwitchUserId:      "90790024",
 					TwitchDisplayName: "wasabimilkshake",
 				},
