@@ -20,6 +20,7 @@ type ToastType string
 
 const (
 	ToastTypeFollowed     ToastType = "followed"
+	ToastTypeRaided       ToastType = "raided"
 	ToastTypeCheered      ToastType = "cheered"
 	ToastTypeSubscribed   ToastType = "subscribed"
 	ToastTypeResubscribed ToastType = "resubscribed"
@@ -29,6 +30,7 @@ const (
 // ToastData contains toast-type-specific details describing the notification we want
 // to display
 type ToastData struct {
+	Raided       *ToastDataRaided
 	Cheered      *ToastDataCheered
 	Resubscribed *ToastDataResubscribed
 	GiftedSubs   *ToastDataGiftedSubs
@@ -48,6 +50,9 @@ func (p *PayloadToast) UnmarshalJSON(data []byte) error {
 	p.Type = f.Type
 	p.Viewer = f.Viewer
 	switch f.Type {
+	case ToastTypeRaided:
+		p.Data = &ToastData{}
+		return json.Unmarshal(f.Data, &p.Data.Raided)
 	case ToastTypeCheered:
 		p.Data = &ToastData{}
 		return json.Unmarshal(f.Data, &p.Data.Cheered)
@@ -62,6 +67,9 @@ func (p *PayloadToast) UnmarshalJSON(data []byte) error {
 }
 
 func (d ToastData) MarshalJSON() ([]byte, error) {
+	if d.Raided != nil {
+		return json.Marshal(d.Raided)
+	}
 	if d.Cheered != nil {
 		return json.Marshal(d.Cheered)
 	}
@@ -72,6 +80,10 @@ func (d ToastData) MarshalJSON() ([]byte, error) {
 		return json.Marshal(d.GiftedSubs)
 	}
 	return json.Marshal(nil)
+}
+
+type ToastDataRaided struct {
+	NumViewers int `json:"num_viewers"`
 }
 
 type ToastDataCheered struct {

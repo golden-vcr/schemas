@@ -45,6 +45,27 @@ func Test_Event(t *testing.T) {
 			`{"type":"toast","payload":{"type":"followed","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"}}}`,
 		},
 		{
+			"onscreen toast for a user that just raided",
+			Event{
+				Type: EventTypeToast,
+				Payload: Payload{
+					Toast: &PayloadToast{
+						Type: ToastTypeRaided,
+						Viewer: &core.Viewer{
+							TwitchUserId:      "90790024",
+							TwitchDisplayName: "wasabimilkshake",
+						},
+						Data: &ToastData{
+							Raided: &ToastDataRaided{
+								NumViewers: 41,
+							},
+						},
+					},
+				},
+			},
+			`{"type":"toast","payload":{"type":"raided","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"data":{"num_viewers":41}}}`,
+		},
+		{
 			"onscreen toast for a user that just cheered",
 			Event{
 				Type: EventTypeToast,
