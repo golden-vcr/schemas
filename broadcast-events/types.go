@@ -3,6 +3,7 @@ package ebroadcast
 import (
 	"time"
 
+	"github.com/golden-vcr/schemas/core"
 	"github.com/google/uuid"
 )
 
@@ -35,4 +36,26 @@ type ScreeningData struct {
 	Id        uuid.UUID `json:"id"`
 	StartedAt time.Time `json:"started_at"`
 	TapeId    int       `json:"tape_id"`
+}
+
+func (ev *Event) ToState(prev core.State) core.State {
+	switch ev.Type {
+	case EventTypeBroadcastStarted:
+		return core.State{
+			BroadcastId: ev.Broadcast.Id,
+		}
+	case EventTypeBroadcastFinished:
+		return core.State{}
+	case EventTypeScreeningStarted:
+		return core.State{
+			BroadcastId: ev.Broadcast.Id,
+			ScreeningId: ev.Screening.Id,
+			TapeId:      ev.Screening.TapeId,
+		}
+	case EventTypeScreeningFinished:
+		return core.State{
+			BroadcastId: ev.Broadcast.Id,
+		}
+	}
+	return prev
 }
