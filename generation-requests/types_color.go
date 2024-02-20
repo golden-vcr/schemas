@@ -47,13 +47,15 @@ var Colors = []Color{
 
 // MatchColor takes a string and returns a canonical Color constant representing the
 // color named at the start of that string, followed by the remainder of the string
-// after whitespace; or ErrNoColor if no color name is detected.
+// after whitespace; or ErrNoColor if no color name is detected. Matching on color name
+// is case-insensitive.
 //
 // Examples:
 // - MatchColor("red") => (ColorRed, "", nil)
 // - MatchColor("red shoes") => (ColorRed, "shoes" nil)
 // - MatchColor("yellow-orange") => (ColorYellowOrange, "", nil)
 // - MatchColor("orange-yellow") => (ColorYellowOrange, "", nil)
+// - MatchColor("Green Muscadine grapes") => (ColorGreen, "Muscadine grapes", nil)
 // - MatchColor("a ripe orange on a tree") => (_, _, ErrNoColor)
 func MatchColor(s string) (Color, string, error) {
 	m := colorRegexp.FindStringSubmatch(s)
@@ -73,6 +75,8 @@ func MatchColor(s string) (Color, string, error) {
 }
 
 func resolveLookupKey(lhs string, rhs string) string {
+	lhs = strings.ToLower(lhs)
+	rhs = strings.ToLower(rhs)
 	if rhs == "" || rhs == lhs {
 		return lhs
 	}
@@ -117,7 +121,7 @@ func makeColorRegexp() *regexp.Regexp {
 	// - group 2 (optional): any slug value, delimited with a space, slash, or hyphen
 	slugsGroup := fmt.Sprintf("(%s)", strings.Join(slugs, "|"))
 	delimChars := "[-/ ]"
-	pattern := fmt.Sprintf("^%s(?:%s%s)?", slugsGroup, delimChars, slugsGroup)
+	pattern := fmt.Sprintf("(?i)^%s(?:%s%s)?", slugsGroup, delimChars, slugsGroup)
 	return regexp.MustCompile(pattern)
 }
 

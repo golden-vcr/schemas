@@ -18,6 +18,11 @@ func Test_MatchColor(t *testing.T) {
 		assert.Equal(t, ColorRed, color)
 		assert.Equal(t, "shoes", remainder)
 
+		color, remainder, err = MatchColor("Green Muscadine grapes")
+		assert.NoError(t, err)
+		assert.Equal(t, ColorGreen, color)
+		assert.Equal(t, "Muscadine grapes", remainder)
+
 		color, remainder, err = MatchColor("red-orange")
 		assert.NoError(t, err)
 		assert.Equal(t, ColorRedOrange, color)
@@ -51,4 +56,5 @@ func Test_resolveLookupKey(t *testing.T) {
 	assert.Equal(t, "red", resolveLookupKey("red", "red"))
 	assert.Equal(t, "orange-red", resolveLookupKey("red", "orange"))
 	assert.Equal(t, "orange-red", resolveLookupKey("orange", "red"))
+	assert.Equal(t, "yellow", resolveLookupKey("Yellow", "yelLOW"))
 }
