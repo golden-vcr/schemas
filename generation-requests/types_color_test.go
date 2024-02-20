@@ -8,30 +8,40 @@ import (
 
 func Test_MatchColor(t *testing.T) {
 	t.Run("basic tests", func(t *testing.T) {
-		color, err := MatchColor("red")
+		color, remainder, err := MatchColor("red")
 		assert.NoError(t, err)
 		assert.Equal(t, ColorRed, color)
+		assert.Equal(t, "", remainder)
 
-		color, err = MatchColor("red-orange")
+		color, remainder, err = MatchColor("red shoes")
+		assert.NoError(t, err)
+		assert.Equal(t, ColorRed, color)
+		assert.Equal(t, "shoes", remainder)
+
+		color, remainder, err = MatchColor("red-orange")
 		assert.NoError(t, err)
 		assert.Equal(t, ColorRedOrange, color)
+		assert.Equal(t, "", remainder)
 
-		color, err = MatchColor("orange-red")
+		color, remainder, err = MatchColor("orange-red")
 		assert.NoError(t, err)
 		assert.Equal(t, ColorRedOrange, color)
+		assert.Equal(t, "", remainder)
 
-		color, err = MatchColor("orange")
+		color, remainder, err = MatchColor("orange")
 		assert.NoError(t, err)
 		assert.Equal(t, ColorOrange, color)
+		assert.Equal(t, "", remainder)
 
-		_, err = MatchColor("green-orange")
+		_, _, err = MatchColor("green-orange")
 		assert.ErrorIs(t, err, ErrNoColor)
 	})
 	t.Run("all color constants match as valid colors", func(t *testing.T) {
 		for _, color := range Colors {
-			got, err := MatchColor(string(color))
+			got, remainder, err := MatchColor(string(color))
 			assert.NoError(t, err)
 			assert.Equal(t, color, got)
+			assert.Equal(t, "", remainder)
 		}
 	})
 }

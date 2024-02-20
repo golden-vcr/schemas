@@ -46,24 +46,30 @@ var Colors = []Color{
 }
 
 // MatchColor takes a string and returns a canonical Color constant representing the
-// color named at the start of that string, or ErrNoColor if no color name is detected.
+// color named at the start of that string, followed by the remainder of the string
+// after whitespace; or ErrNoColor if no color name is detected.
 //
 // Examples:
-// - MatchColor("red") => (ColorRed, nil)
-// - MatchColor("yellow-orange") => (ColorYellowOrange, nil)
-// - MatchColor("orange-yellow") => (ColorYellowOrange, nil)
-// - MatchColor("a ripe orange") => (_, ErrNoColor)
-func MatchColor(s string) (Color, error) {
+// - MatchColor("red") => (ColorRed, "", nil)
+// - MatchColor("red shoes") => (ColorRed, "shoes" nil)
+// - MatchColor("yellow-orange") => (ColorYellowOrange, "", nil)
+// - MatchColor("orange-yellow") => (ColorYellowOrange, "", nil)
+// - MatchColor("a ripe orange on a tree") => (_, _, ErrNoColor)
+func MatchColor(s string) (Color, string, error) {
 	m := colorRegexp.FindStringSubmatch(s)
 	if m == nil {
-		return ColorRed, ErrNoColor
+		return ColorRed, "", ErrNoColor
 	}
 	key := resolveLookupKey(m[1], m[2])
 	color, ok := colorLookup[key]
 	if !ok {
-		return ColorRed, ErrNoColor
+		return ColorRed, "", ErrNoColor
 	}
-	return color, nil
+	remainderPos := len(m[0])
+	for remainderPos < len(s) && s[remainderPos] == ' ' {
+		remainderPos++
+	}
+	return color, s[remainderPos:], nil
 }
 
 func resolveLookupKey(lhs string, rhs string) string {
