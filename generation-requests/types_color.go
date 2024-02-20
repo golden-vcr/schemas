@@ -45,6 +45,38 @@ var Colors = []Color{
 	ColorMagenta,
 }
 
+func (c Color) GetComplement() Color {
+	switch c {
+	case ColorRed:
+		return ColorGreen
+	case ColorRedOrange:
+		return ColorCyan
+	case ColorOrange:
+		return ColorSkyBlue
+	case ColorYellowOrange:
+		return ColorBlue
+	case ColorYellow:
+		return ColorIndigo
+	case ColorChartreuse:
+		return ColorMagenta
+	case ColorGreen:
+		return ColorRed
+	case ColorCyan:
+		return ColorRedOrange
+	case ColorSkyBlue:
+		return ColorOrange
+	case ColorBlue:
+		return ColorYellowOrange
+	case ColorIndigo:
+		return ColorYellowOrange
+	case ColorPurple:
+		return ColorYellow
+	case ColorMagenta:
+		return ColorChartreuse
+	}
+	return ColorRed
+}
+
 // MatchColor takes a string and returns a canonical Color constant representing the
 // color named at the start of that string, followed by the remainder of the string
 // after whitespace; or ErrNoColor if no color name is detected. Matching on color name
