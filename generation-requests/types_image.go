@@ -58,6 +58,6 @@ type ImageInputsGhost struct {
 }
 
 type ImageInputsClipArt struct {
-	Color   string `json:"color"`
+	Color   Color  `json:"color"`
 	Subject string `json:"subject"`
 }
