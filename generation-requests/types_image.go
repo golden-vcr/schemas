@@ -12,15 +12,15 @@ type PayloadImage struct {
 type ImageStyle string
 
 const (
-	ImageStyleGhost   ImageStyle = "ghost"
-	ImageStyleClipArt ImageStyle = "clip-art"
+	ImageStyleGhost  ImageStyle = "ghost"
+	ImageStyleFriend ImageStyle = "friend"
 )
 
 // ImageInputs contains the user-provided information that we'll use to build a prompt
 // for our image generation request; these inputs vary by image style
 type ImageInputs struct {
-	Ghost   *ImageInputsGhost
-	ClipArt *ImageInputsClipArt
+	Ghost  *ImageInputsGhost
+	Friend *ImageInputsFriend
 }
 
 func (e *PayloadImage) UnmarshalJSON(data []byte) error {
@@ -37,8 +37,8 @@ func (e *PayloadImage) UnmarshalJSON(data []byte) error {
 	switch f.Style {
 	case ImageStyleGhost:
 		return json.Unmarshal(f.Inputs, &e.Inputs.Ghost)
-	case ImageStyleClipArt:
-		return json.Unmarshal(f.Inputs, &e.Inputs.ClipArt)
+	case ImageStyleFriend:
+		return json.Unmarshal(f.Inputs, &e.Inputs.Friend)
 	}
 	return nil
 }
@@ -47,8 +47,8 @@ func (i ImageInputs) MarshalJSON() ([]byte, error) {
 	if i.Ghost != nil {
 		return json.Marshal(i.Ghost)
 	}
-	if i.ClipArt != nil {
-		return json.Marshal(i.ClipArt)
+	if i.Friend != nil {
+		return json.Marshal(i.Friend)
 	}
 	return json.Marshal(nil)
 }
@@ -57,7 +57,7 @@ type ImageInputsGhost struct {
 	Subject string `json:"subject"`
 }
 
-type ImageInputsClipArt struct {
+type ImageInputsFriend struct {
 	Color   Color  `json:"color"`
 	Subject string `json:"subject"`
 }
