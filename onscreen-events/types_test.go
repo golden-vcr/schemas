@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/golden-vcr/schemas/core"
-	genreq "github.com/golden-vcr/schemas/generation-requests"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -182,22 +181,72 @@ func Test_Event(t *testing.T) {
 			`{"type":"toast","payload":{"type":"gifted-subs","viewer":null,"data":{"num_subscriptions":5}}}`,
 		},
 		{
+			"playback of a static image alert",
+			Event{
+				Type: EventTypeImage,
+				Payload: Payload{
+					Image: &PayloadImage{
+						Type: ImageTypeStatic,
+						Viewer: core.Viewer{
+							TwitchUserId:      "90790024",
+							TwitchDisplayName: "wasabimilkshake",
+						},
+						Details: ImageDetails{
+							Static: &ImageDetailsStatic{
+								ImageId: "prayer-bear",
+								Message: "Hello, this is a message",
+							},
+						},
+					},
+				},
+			},
+			`{"type":"image","payload":{"type":"static","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"details":{"image_id":"prayer-bear","message":"Hello, this is a message"}}}`,
+		},
+		{
 			"playback of a ghost image alert",
 			Event{
 				Type: EventTypeImage,
 				Payload: Payload{
 					Image: &PayloadImage{
+						Type: ImageTypeGhost,
 						Viewer: core.Viewer{
 							TwitchUserId:      "90790024",
 							TwitchDisplayName: "wasabimilkshake",
 						},
-						Style:       genreq.ImageStyleGhost,
-						Description: "a seal",
-						ImageUrl:    "https://my-cool-images.biz/seal.jpg",
+						Details: ImageDetails{
+							Ghost: &ImageDetailsGhost{
+								ImageUrl:    "https://my-cool-images.biz/seal.jpg",
+								Description: "a seal",
+							},
+						},
 					},
 				},
 			},
-			`{"type":"image","payload":{"viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"style":"ghost","description":"a seal","image_url":"https://my-cool-images.biz/seal.jpg"}}`,
+			`{"type":"image","payload":{"type":"ghost","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"details":{"image_url":"https://my-cool-images.biz/seal.jpg","description":"a seal"}}}`,
+		},
+		{
+			"playback of a friend image alert",
+			Event{
+				Type: EventTypeImage,
+				Payload: Payload{
+					Image: &PayloadImage{
+						Type: ImageTypeFriend,
+						Viewer: core.Viewer{
+							TwitchUserId:      "90790024",
+							TwitchDisplayName: "wasabimilkshake",
+						},
+						Details: ImageDetails{
+							Friend: &ImageDetailsFriend{
+								ImageUrl:        "https://my-cool-images.biz/seal.jpg",
+								Description:     "a seal",
+								Name:            "Sealy",
+								BackgroundColor: "#ffcc00",
+							},
+						},
+					},
+				},
+			},
+			`{"type":"image","payload":{"type":"friend","viewer":{"twitch_user_id":"90790024","twitch_display_name":"wasabimilkshake"},"details":{"image_url":"https://my-cool-images.biz/seal.jpg","description":"a seal","name":"Sealy","background_color":"#ffcc00"}}}`,
 		},
 	}
 	for _, tt := range tests {
