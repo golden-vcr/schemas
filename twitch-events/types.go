@@ -11,6 +11,7 @@ type EventType string
 const (
 	EventTypeStreamStarted           EventType = "stream-started"
 	EventTypeStreamEnded             EventType = "stream-ended"
+	EventTypeStreamHypeStarted       EventType = "stream-hype-started"
 	EventTypeViewerFollowed          EventType = "viewer-followed"
 	EventTypeViewerRaided            EventType = "viewer-raided"
 	EventTypeViewerCheered           EventType = "viewer-cheered"

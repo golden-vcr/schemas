@@ -15,6 +15,8 @@ func FromEventSub(subscription *helix.EventSubSubscription, data json.RawMessage
 		return fromStreamOnlineEvent(data)
 	case helix.EventSubTypeStreamOffline:
 		return fromStreamOfflineEvent(data)
+	case helix.EventSubTypeHypeTrainBegin:
+		return fromHypeTrainBeginEvent(data)
 	case helix.EventSubTypeChannelFollow:
 		return fromChannelFollowEvent(data)
 	case helix.EventSubTypeChannelRaid:

@@ -13,3 +13,9 @@ func fromStreamOfflineEvent(data json.RawMessage) (*Event, error) {
 		Type: EventTypeStreamEnded,
 	}, nil
 }
+
+func fromHypeTrainBeginEvent(data json.RawMessage) (*Event, error) {
+	return &Event{
+		Type: EventTypeStreamHypeStarted,
+	}, nil
+}
